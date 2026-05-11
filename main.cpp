@@ -57,7 +57,10 @@ This project now demonstrates:
     CLI Development → Creating an interactive terminal-based tool.
 */
 
+
 #include <iostream>
+#include <string>
+#include "CLI.h"
 
 int main(int argc, char *argv[])
 {
@@ -80,10 +83,10 @@ int main(int argc, char *argv[])
         }
         else
         {
-            break;
+            break; 
         }
 
-        ++i;
+        ++i; 
     }
 
     return 0;
