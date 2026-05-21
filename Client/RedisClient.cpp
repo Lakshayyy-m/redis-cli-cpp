@@ -66,3 +66,18 @@ void RedisClient::disconnect()
         sockfd = -1;
     }
 }
+
+int RedisClient::getSocketFD() const
+{
+    return sockfd;
+}
+
+std::string RedisClient::getHost() const
+{
+    return host;
+}
+
+int RedisClient::getPort() const
+{
+    return port;    
+}
