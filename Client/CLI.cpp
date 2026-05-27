@@ -48,9 +48,16 @@ void CLI::run()
 
         if(args.empty()) continue;
 
-        for(const auto &arg : args) {
-            std::cout << arg << "\n";
+        // for(const auto &arg : args) {
+        //     std::cout << arg << "\n";
 
+        // }
+        std::string command = CommandHandler::buildRESPcommand(args);
+        if(!redisClient.sendCommand(command)) {
+            std::cerr << "(Error) Failed to send the command.\n";
+            break;
         }
+
+        // Parse and print repsonse                                    
     }
 }

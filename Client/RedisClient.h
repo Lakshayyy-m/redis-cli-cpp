@@ -18,6 +18,7 @@ public:
     int getSocketFD() const;
     int getPort() const;
     std::string getHost() const;
+    bool sendCommand(const std::string &command);
 private:
     std::string host;
     int port;
