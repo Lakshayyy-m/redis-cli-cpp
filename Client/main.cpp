@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     std::string host = "127.0.0.1";
     int port = 6379;
     int i = 1;
-
+    std::vector<std::string> commandArgs;
     // parsing command line arguments
     while (i < argc)
     {
@@ -82,6 +82,12 @@ int main(int argc, char *argv[])
         }
         else
         {
+            // remaining args
+            while (i < argc)
+            {
+                commandArgs.push_back(argv[i]);
+                i++;
+            }
             break;
         }
 
@@ -89,8 +95,15 @@ int main(int argc, char *argv[])
     }
 
     CLI cli(host, port);
+    if (!commandArgs.empty())
+    {
+        cli.executeCommand(commandArgs); // Execute command immediately
+    }
+    else
+    {
 
-    cli.run();
+        cli.run();
+    }
 
     return 0;
 }

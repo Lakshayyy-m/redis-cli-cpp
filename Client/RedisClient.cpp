@@ -84,6 +84,7 @@ int RedisClient::getPort() const
 
 bool RedisClient::sendCommand(const std::string &command)
 {
+
     if (sockfd == -1)
         return false;
 

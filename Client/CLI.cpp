@@ -31,9 +31,9 @@ void CLI::run()
         line = trim(line);
         if (line.empty())
             continue;
-        if (line == "quit")
+        if (line == "quit" || line == "exit")
         {
-            std::cout << "Quitting....";
+            std::cout << "Quitting!!!!";
             break;
         }
 
@@ -44,20 +44,58 @@ void CLI::run()
         }
 
         // Split commands into tokens
-        std::vector <std::string> args = CommandHandler::splitArgs(line);
+        std::vector<std::string> args = CommandHandler::splitArgs(line);
 
-        if(args.empty()) continue;
+        if (args.empty())
+            continue;
 
         // for(const auto &arg : args) {
         //     std::cout << arg << "\n";
 
         // }
         std::string command = CommandHandler::buildRESPcommand(args);
-        if(!redisClient.sendCommand(command)) {
+        if (!redisClient.sendCommand(command))
+        {
             std::cerr << "(Error) Failed to send the command.\n";
             break;
         }
 
-        // Parse and print repsonse                                    
+        // Parse and print repsonse
+        std::string response = ResponseParser::parseResponse(redisClient.getSocketFD());
+
+        std::cout << response << "\n";
     }
+
+    redisClient.disconnect();
+}
+
+void CLI::executeCommand(const std::vector<std::string> &args)
+{
+    if (args.empty())
+        return;
+
+    if (!redisClient.connectToServer())
+    {
+        return;
+    }
+
+    std::string command = CommandHandler::buildRESPcommand(args);
+
+    // for (const auto &arg : args)
+    // {
+    //     std::cout << arg << "\n";
+    // }
+
+    if (!redisClient.sendCommand(command))
+    {
+        std::cerr << "(Error) Failed to send command. \n";
+        return;
+    }
+
+    // Parse and pring response
+    std::string response = ResponseParser::parseResponse(redisClient.getSocketFD());
+
+    std::cout << response << "\n";
+
+    redisClient.disconnect();
 }
